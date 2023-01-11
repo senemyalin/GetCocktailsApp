@@ -22,8 +22,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drink_list_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:spanCount="2"
+        tools:listitem="@layout/adapter_drink_item"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/search_input_container"
         app:layout_constraintStart_toStartOf="@id/search_input_container"

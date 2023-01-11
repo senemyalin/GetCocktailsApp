@@ -1,8 +1,6 @@
 package com.junior.kekod.kotlinstudyapp.ui.home
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +19,14 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel by viewModels<HomeViewModel>()
 
+    private val adapter = DrinkRecyclerViewAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater).apply {
+            drinkListRecyclerView.adapter = adapter
+        }
 
         return binding.root
     }
@@ -33,6 +35,26 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeSearchTextChanges()
+        observeUiState()
+    }
+
+    private fun observeUiState() {
+        viewModel.drinkHomeUiState.observe(viewLifecycleOwner){
+            when(it){
+                is HomeUiState.Error -> {
+
+                }
+                HomeUiState.Loading -> {
+
+                }
+                is HomeUiState.Success -> {
+                    handleSuccessUiState(it.data)
+                }
+            }
+        }
+    }
+    private fun handleSuccessUiState(data: List<HomeUiData>) {
+        adapter.updateDrinkElements(data)
     }
 
     private fun observeSearchTextChanges() {

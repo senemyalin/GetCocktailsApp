@@ -25,8 +25,11 @@ class HomeViewModel @Inject constructor(
 
     private val _drinkHomeUiState = MutableLiveData<HomeUiState>()
     val drinkHomeUiState: LiveData<HomeUiState> get() = _drinkHomeUiState
+
     fun getDrinksWithFirstLetter(firstLetter: String) {
         viewModelScope.launch {
+            //collectlatest -> eger 2 defa emit edilirse ilk emit iptal olur 2. emit calisir. ilk emit bitmeden 2.ye gecilir
+            //collect -> tum emitler calisir, ilk emitin bitmesini bekler sonra digerine gecer.
             getDrinkWithFirstLetterUseCase(firstLetter).collect {
                 when (it) {
                     is NetworkResponse.Error -> {
